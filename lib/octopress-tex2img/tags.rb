@@ -13,7 +13,7 @@ module OctopressTex2img
       if !File.exists?(@texpath)
         raise ArgumentError.new("texfile[#{@texpath}] does not exist!")
       end
-      @imgtag = Octopress::Tags::ImageTag::Tag.new(tag_name, markup, tokens)
+      @imgtag = Octopress::Tags::ImageTag::Tag.new(tag_name, params.join(" "), tokens)
     end
 
     def render(context)
