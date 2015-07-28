@@ -2,4 +2,5 @@
   title: "Test Build"
   dir: test-site
   build: true
-  compare: _expected _site
+  compare: 
+    - _expected/index.html _site/index.html
