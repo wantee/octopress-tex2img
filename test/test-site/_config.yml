@@ -1,4 +1,12 @@
-name: Test site
-timezone: UTC
-markdown: kramdown
-gems: []
+permalink: /:year/:month/:day/:title/
+markdown: redcarpet
+redcarpet:
+  smart: false
+exclude:
+  - Gemfile
+  - misc/
+
+gems:
+  - octopress-image-tag
+  - octopress-tex2img
+
