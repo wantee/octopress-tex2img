@@ -1,8 +1,13 @@
 # OctopressTex2img
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/octopress-tex2img`. To experiment with that code, run `bin/console` for an interactive prompt.
+An octopress ink plugin generating png img from tex source and insert it into markdown posts.
 
-TODO: Delete this and the text above, and describe your gem
+[![Build Status](https://travis-ci.org/wantee/octopress-tex2img.svg)](https://travis-ci.org/wantee/octopress-tex2img)
+[![Gem Version](https://badge.fury.io/rb/octopress-tex2img.svg)](http://badge.fury.io/rb/octopress-tex2img)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/wantee/octopress-tex2img/blob/master/LICENSE.txt)
+
+## Prerequisites
+* TeX Live 2013
 
 ## Installation
 
@@ -22,7 +27,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+{% tex2img path_to_tex_file args-to-img-tag %}
+```
+
+For example,
+
+```
+{% tex2img misc/test.tex center /assets/miscs/test.png "fig:test" title:"Test tex figure" %}
+```
+
+`octopress-tex2img` will generate png file from tex file, and replace the `tex2img` tag to an `img` tag at the current position.
 
 ## Development
 
