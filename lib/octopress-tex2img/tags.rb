@@ -10,9 +10,6 @@ module OctopressTex2img
     def initialize(tag_name, markup, tokens)
       super
       @texpath, *params = markup.strip.split(/\s/)
-      if !File.exists?(@texpath)
-        raise ArgumentError.new("texfile[#{@texpath}] does not exist!")
-      end
       @imgtag = Octopress::Tags::ImageTag::Tag.new(tag_name, params.join(" "), tokens)
     end
 
@@ -21,6 +18,9 @@ module OctopressTex2img
       site = context.registers[:site]
       pngpath = File.join(site.source, attributes['src'])
       @texpath = File.join(site.source, @texpath)
+      if !File.exists?(@texpath)
+        raise ArgumentError.new("texfile[#{@texpath}] does not exist!")
+      end
 
       if !File.exists?(pngpath) || File.stat(@texpath).mtime > File.stat(pngpath).mtime
         puts "Generating #{pngpath} from #{@texpath}"
@@ -31,6 +31,11 @@ module OctopressTex2img
         pdf = @texpath.sub(/.tex$/, '.pdf')
       	system "xelatex -output-directory=#{texdir} --interaction=nonstopmode #{base} >/dev/null"
       	system "convert -density 300 #{pdf} -quality 90 #{pngpath}"
+        if File.exists?(pngpath)
+          site.static_files << Jekyll::StaticFile.new(site,
+                  site.source, File.dirname(attributes['src']),
+                  File.basename(pngpath))
+        end
 
       	FileUtils.rm_f("#{base}.aux")
       	FileUtils.rm_f("#{base}.log")
