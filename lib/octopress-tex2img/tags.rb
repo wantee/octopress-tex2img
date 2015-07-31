@@ -22,7 +22,7 @@ module OctopressTex2img
         raise ArgumentError.new("texfile[#{@texpath}] does not exist!")
       end
 
-      if !File.exists?(pngpath) || File.stat(@texpath).mtime > File.stat(pngpath).mtime
+      if !File.exists?(pngpath) || timestamp(@texpath) > File.stat(pngpath).mtime
         puts "Generating #{pngpath} from #{@texpath}"
         texdir = File.dirname(@texpath)
         pngdir = File.dirname(pngpath)
@@ -42,6 +42,21 @@ module OctopressTex2img
       	FileUtils.rm_f("#{base}.pdf")
       end
       @imgtag.render(context)
+    end
+
+    def timestamp(texpath)
+      ts = File.stat(texpath).mtime
+      File.open(texpath, 'r') do |ff|
+        while ll = ff.gets
+          if /\\input{(?<inputfile>.*)}/ =~ ll
+            tn = File.stat(File.join(File.dirname(texpath), inputfile)).mtime
+            if tn > ts
+              ts = tn
+            end
+          end
+        end
+      end
+      ts
     end
   end
 end
